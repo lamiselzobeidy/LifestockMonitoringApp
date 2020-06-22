@@ -1,9 +1,9 @@
 import React ,{useState, useEffect}from 'react';
 import { StyleSheet, Text, View , FlatList} from 'react-native';
-import { DataTable } from 'react-native-paper';
+import { DataTable, Button } from 'react-native-paper';
 
 
-const getTime=  (item)=> {
+const getTime = (item)=> {
     let milliseconds = item.timestamp  
     let dateObject = new Date(milliseconds)
     let humanDateFormat = dateObject.toLocaleString() 
@@ -11,7 +11,7 @@ const getTime=  (item)=> {
 
 return  humanDateFormat
 }
-const getPostureName=(value)=>{
+const getPostureName = (value)=>{
   if( value == 0 ) return 'Standing'
   else if( value == 1 ) return 'Resting'
   else if( value == 2) return 'Moving'
@@ -26,7 +26,7 @@ export default function Report() {
     .then(response => response.json())
     .then(data => {
        console.log(data.results)
-       setarr(data.results)     
+       setarr(data.results.slice(0,20))     
     });
   
   }
@@ -36,8 +36,9 @@ export default function Report() {
  },[]);
     
   return (
+    
     <DataTable >
-
+       <Button style={{width:'10%', alignSelf:'flex-end'}} icon="reload" mode="contained" onPress={() => window.location.reload()}>Reload </Button>
       <DataTable.Header>
           <DataTable.Title>Posture</DataTable.Title>
           <DataTable.Title>Time</DataTable.Title>
@@ -51,8 +52,11 @@ export default function Report() {
                 <DataTable.Cell >{getTime(item)}</DataTable.Cell> 
              </DataTable.Row> )}
             keyExtractor={(item, index) => index.toString()} />
-       
+           
+    
     </DataTable>
+    
+    
   );
 }
 
