@@ -1,64 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import Report from './screens/report'
+import React ,{useState, useEffect}from 'react';
+import { StyleSheet, Text, View , FlatList} from 'react-native';
+import { DataTable } from 'react-native-paper';
 
-const getTime = (item) => {
-  let milliseconds = item.timestamp * 1000 // 1575909015000
-  let dateObject = new Date(milliseconds)
-  let humanDateFormat = dateObject.toLocaleString() //2
-  return <Text> {humanDateFormat} </Text>
+
+const getTime=  (item)=> {
+    let milliseconds = item.timestamp  
+    let dateObject = new Date(milliseconds)
+    let humanDateFormat = dateObject.toLocaleString() 
+
+
+return  humanDateFormat
 }
+const getPostureName=(value)=>{
+  if( value == 0 ) return 'Standing'
+  else if( value == 1 ) return 'Resting'
+  else if( value == 2) return 'Moving'
+  return 'Eating'
+}
+export default function Report() {
 
-export default function App() {
+  const [arr, setarr] = useState([]);
 
-  const [currentPosture, setCurrentPosture] = useState(0);
-  const [allPostures, setAllPostures] = useState([]);
-
-  const getCurrentPosture = () => {
-    fetch('https://things.ubidots.com/api/v1.6/devices/flaskServer/posture-value/lv/?token=BBFF-BjBE8UN70vxuFasG3L0PVLIxv0SNg6')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        setCurrentPosture(data)
-      });
-  }
-
-  const getAllPostures = () => {
+  const  getallvalues = () => {
     fetch('https://things.ubidots.com/api/v1.6/devices/flaskServer/posture-value/values/?token=BBFF-BjBE8UN70vxuFasG3L0PVLIxv0SNg6')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.results)
-        setAllPostures(data.results)
-        console.log(allPostures);
-      });
-
+    .then(response => response.json())
+    .then(data => {
+       console.log(data.results)
+       setarr(data.results)     
+    });
+  
   }
 
-  useEffect(() => {
-    getCurrentPosture()
-    getAllPostures()
-  }, []);
+  useEffect(()=>{
+    getallvalues()
+ },[]);
+    
+  return (
+    <DataTable >
 
+      <DataTable.Header>
+          <DataTable.Title>Posture</DataTable.Title>
+          <DataTable.Title>Time</DataTable.Title>
+      </DataTable.Header>
 
-  return  <Report/>
-  //   (<View style={styles.container}>
-  //     <Text>Current posture is  {currentPosture}</Text>
-  //     <FlatList
-  //       data={allPostures}
-  //       renderItem={({ item }) => (
-  //         <View>
-  //           <Text>{item.value}</Text>
-  //           <Text> {getTime(item)}</Text>
-  //         </View>
-  //       )}
-  //     />
-  //   </View>
-  // );
+      <FlatList
+            data={arr} 
+            renderItem={ ( {item,index} )=>(
+              <DataTable.Row>
+                <DataTable.Cell>{getPostureName(item.value)}</DataTable.Cell>
+                <DataTable.Cell >{getTime(item)}</DataTable.Cell> 
+             </DataTable.Row> )}
+            keyExtractor={(item, index) => index.toString()} />
+       
+    </DataTable>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 10,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
