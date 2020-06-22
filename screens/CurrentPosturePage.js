@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Button } from 'react-native';
 
 
 const getPostureName = (value) => {
@@ -27,9 +27,13 @@ export default function CurrentPosture() {
             <View style={styles.postureContainer}>
                 <Text style={styles.posture}>Current Posture</Text>
                 <Text style={styles.postureValue}>{getPostureName(currentPosture)}</Text>
+                
+            </View>  
+            <View style={styles.content}>
+            <Button style={{width:'100%', height:'15%', alignSelf:'flex-end'}} icon="reload" title="Reload" mode="contained" onPress={() => getCurrentPosture}>Reload </Button>
             </View>
-            <Text style={styles.content}></Text>
         </View>
+        
     )
 }
 const styles = StyleSheet.create({
@@ -39,16 +43,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        padding: '10px',
-        paddingTop: '100px'
+        padding: 10,
+        paddingTop: 100
     },
     image: {
         flex: 2,
         alignItems: 'center',
         justifyContent: 'space-around',
-        width: 310,
-        height: 100,
-        marginBottom: '20px',
+        width: '89%',
+        height: '26%',
+        marginBottom: 20,
     },
     postureContainer: {
         flex: 2,
@@ -74,10 +78,11 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 2,
+        width: '50%',
+        flexDirection:'row',
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-        textAlign: 'center',
     },
 
 });

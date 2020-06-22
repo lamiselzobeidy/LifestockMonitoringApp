@@ -1,6 +1,7 @@
 import React ,{useState, useEffect}from 'react';
 import { StyleSheet, Text, View , FlatList} from 'react-native';
 import { DataTable, Button } from 'react-native-paper';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const getTime = (item)=> {
@@ -17,6 +18,7 @@ const getPostureName = (value)=>{
   else if( value == 2) return 'Moving'
   return 'Eating'
 }
+
 export default function Report() {
 
   const [arr, setarr] = useState([]);
@@ -36,14 +38,14 @@ export default function Report() {
  },[]);
     
   return (
-    
-    <DataTable >
-       <Button style={{width:'10%', alignSelf:'flex-end'}} icon="reload" mode="contained" onPress={() => window.location.reload()}>Reload </Button>
+    <View >
+    <DataTable>
+       <Button style={{width:'100%', height:'15%', alignSelf:'flex-end'}} icon="reload" mode="contained" onPress={() => getallvalues}>Reload </Button>
       <DataTable.Header>
           <DataTable.Title>Posture</DataTable.Title>
           <DataTable.Title>Time</DataTable.Title>
       </DataTable.Header>
-
+      <ScrollView>
       <FlatList
             data={arr} 
             renderItem={ ( {item,index} )=>(
@@ -52,17 +54,23 @@ export default function Report() {
                 <DataTable.Cell >{getTime(item)}</DataTable.Cell> 
              </DataTable.Row> )}
             keyExtractor={(item, index) => index.toString()} />
+
+</ScrollView>
            
     
     </DataTable>
+    </View>
     
     
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    flex: 10,
+    paddingTop:100,
+    padding:20,
+    flex: 6,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
