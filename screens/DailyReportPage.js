@@ -28,7 +28,7 @@ export default function Report() {
     .then(response => response.json())
     .then(data => {
        console.log(data.results)
-       setarr(data.results.slice(0,20))     
+       setarr(data.results.slice(0,10))     
     });
   
   }
@@ -38,20 +38,19 @@ export default function Report() {
  },[]);
     
   return (
-    <View >
+    <View style={styles.container} >
     <DataTable>
-       <Button style={{width:'100%', height:'15%', alignSelf:'flex-end'}} icon="reload" mode="contained" onPress={() => getallvalues}>Reload </Button>
       <DataTable.Header>
-          <DataTable.Title>Posture</DataTable.Title>
-          <DataTable.Title>Time</DataTable.Title>
+          <DataTable.Title  style={{alignSelf:'center'}}>Posture</DataTable.Title>
+          <DataTable.Title style={{alignSelf:'center'}}>Time</DataTable.Title>
       </DataTable.Header>
       <ScrollView>
       <FlatList
             data={arr} 
             renderItem={ ( {item,index} )=>(
               <DataTable.Row>
-                <DataTable.Cell>{getPostureName(item.value)}</DataTable.Cell>
-                <DataTable.Cell >{getTime(item)}</DataTable.Cell> 
+                <DataTable.Cell style={{alignSelf:'center'}}>{getPostureName(item.value)}</DataTable.Cell>
+                <DataTable.Cell style={{alignSelf:'center'}}>{getTime(item)}</DataTable.Cell> 
              </DataTable.Row> )}
             keyExtractor={(item, index) => index.toString()} />
 
@@ -59,6 +58,7 @@ export default function Report() {
            
     
     </DataTable>
+    <Button style={{width:'50%', height:'7%', alignSelf:'center', marginTop:25}} color='#b504be' icon="reload" mode="contained" onPress={() => getallvalues}>Reload </Button>
     </View>
     
     
@@ -68,8 +68,7 @@ export default function Report() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop:100,
-    padding:20,
+    padding:10,
     flex: 6,
     backgroundColor: '#fff',
     alignItems: 'center',
