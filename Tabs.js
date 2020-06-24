@@ -3,10 +3,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import CurrentPosture from './screens/CurrentPosturePage';
 import DailyReport from './screens/DailyReportPage';
-import Dummy from './screens/dummy';
 import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesome, Octicons, AntDesign } from "@expo/vector-icons";
 import { StyleSheet, Text, View, FlatList, Header } from 'react-native';
+import {Icon} from 'react-native-elements';
+import { useFonts, LobsterTwo_700Bold } from '@expo-google-fonts/lobster-two';
+import { ScreenStackHeaderRightView } from 'react-native-screens';
 
 const Stack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
@@ -34,14 +36,23 @@ function MyTabs() {
   );
 }
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    LobsterTwo_700Bold
+  });
     return (
       <NavigationContainer> 
       <Stack.Navigator screenOptions={{
         headerTintColor: 'white',
-        headerStyle: { backgroundColor: '#9a5def' },
+        headerStyle: { backgroundColor: '#9a5def', fontFamily: 'Inter_900Black' },
         headerTitleAlign:'center',
+          headerTitleStyle : {
+            fontFamily: 'LobsterTwo_700Bold',
+            fontSize:30
+          },
+          headerBackImage: ()=>(<Icon name='rowing'/>)
+          
       }}>
-      <Stack.Screen
+      <Stack.Screen options={{ tabBarIcon: ({ focused, color }) => ( <Octicons name="broadcast" size={25} color={color} /> ), tabBarLabel:"Posture" }}
         name="Life Stock Monitoring"
         children={MyTabs}
       />
@@ -49,5 +60,10 @@ export default function App() {
       </NavigationContainer>
     );
   }
-
-  
+  const styles = StyleSheet.create({
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: 120
+  }
+});
