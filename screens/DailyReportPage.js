@@ -21,6 +21,8 @@ const getPostureName = (value)=>{
 
 export default function Report() {
 
+  
+
   const [arr, setarr] = useState([]);
 
   const  getallvalues = () => {
@@ -34,11 +36,16 @@ export default function Report() {
   }
 
   useEffect(()=>{
-    getallvalues()
+    const interval = setInterval(() => {
+      getallvalues();
+    }, 1000);
+    return () => clearInterval(interval);
+    
  },[]);
     
   return (
     <View style={styles.container} >
+      <View style={styles.tableContainer}>
     <DataTable>
       <DataTable.Header>
           <DataTable.Title  style={{alignSelf:'center'}}>Posture</DataTable.Title>
@@ -58,7 +65,10 @@ export default function Report() {
            
     
     </DataTable>
-    <Button style={{width:'50%', height:'7%', alignSelf:'center', marginTop:25}} color='#b504be' icon="reload" mode="contained" onPress={() => getallvalues}>Reload </Button>
+    </View>
+    <View style={styles.buttonContainer}>
+    <Button color='#b504be' icon="reload" mode="contained" onPress={() => getallvalues}>Reload </Button>
+    </View>
     </View>
     
     
@@ -71,7 +81,18 @@ const styles = StyleSheet.create({
     padding:10,
     flex: 6,
     backgroundColor: '#fff',
+  },
+  tableContainer: {
+    flex: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  buttonContainer:{
+    flex:1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width:'40%',
+    height: '37%',
+    alignSelf: 'center',
+  }
 });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, Button } from 'react-native';
-
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 
 const getPostureName = (value) => {
     if (value == 0) return 'Standing'
@@ -10,6 +10,9 @@ const getPostureName = (value) => {
 }
 
 export default function CurrentPosture() {
+    let [fontsLoaded] = useFonts({
+        Inter_900Black,
+      });
 
     const [currentPosture, setCurrentPosture] = useState(0);
 
@@ -21,18 +24,26 @@ export default function CurrentPosture() {
                 setCurrentPosture(data)
             });
     }
+
+    useEffect(()=>{
+        const interval = setInterval(() => {
+          getCurrentPosture();
+          console.log("this is called");
+        }, 1000);
+        return () => clearInterval(interval);
+        
+     },[]);
+
     return (
         <View style={styles.container}>
+
             <View style={styles.imageContainer}>
             <Image style={styles.image} source={require('../images/cow.png')} />
             </View>  
             <View style={styles.postureContainer}>
             <Text style={styles.posture}>Current Posture</Text>
-                <Text style={styles.postureValue}>{getPostureName(currentPosture)}</Text>    
-            </View>  
-            <View style={styles.refreshContainer}>
-            <Button style={{width:'100%', height:'15%', alignSelf:'flex-end', }} color='#b504be' icon="reload" title="Reload" mode="contained" onPress={() => getCurrentPosture}>Reload </Button>
-            </View>
+                <Text style={styles.postureValue}>"{getPostureName(currentPosture)}"</Text>    
+            </View>   
         </View>
     )
 }
@@ -74,10 +85,8 @@ const styles = StyleSheet.create({
     posture:{
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 40,
+        fontSize: 35,
         textAlign: 'center',
-        fontFamily: 'roboto',
-        fontWeight: 'bold',
     },
     postureValue: {
         flex:1,
@@ -85,6 +94,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         fontSize: 25,
         textAlign: 'center',
+        fontSize: 35,
+        fontWeight: 'bold',
+
     },
     
 });
