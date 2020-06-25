@@ -11,21 +11,34 @@ const getPostureName = (value) => {
 export default function CurrentPosture() {
 
     const [currentPosture, setCurrentPosture] = useState(0);
+    let restingCount=0
+    const checkrestingCount = () =>{
+        console.log("da l restingCount",restingCount);
+                 if( restingCount == 50 ){
+                    alert("Your cow has been sleeping for so long")
+                   restingCount=0
+                 }
+    }
     const getCurrentPosture = () => {
         fetch('https://things.ubidots.com/api/v1.6/devices/flaskServer/posture-value/lv/?token=BBFF-BjBE8UN70vxuFasG3L0PVLIxv0SNg6')
             .then(response => response.json())
             .then(data => {
                 console.log(data)
                 setCurrentPosture(data)
+                if( data == 1){
+                    restingCount++
+                }              
             });
+            checkrestingCount()
     }
-
+   
     useEffect(() => {
         const interval = setInterval(() => {
             getCurrentPosture();
             console.log("this is called");
         }, 1000);
         return () => clearInterval(interval);
+    
     }, []);
 
     return (
